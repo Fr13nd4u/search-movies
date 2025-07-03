@@ -55,7 +55,8 @@ const AdvancedFilters:FC = () => {
             ...filters,
             page: Number(filters.page),
         });
-    }, [filters,contextFilters,search]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filters]);
 
     return (
         <div className={bem()}>
