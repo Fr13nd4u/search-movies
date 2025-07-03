@@ -4,7 +4,6 @@ import React from 'react';
 import {createBem, getGenreNames} from "@/shared/lib";
 import styles from "./movie-card.module.scss"
 import {MovieCardProps} from "./movie-card.types";
-import {genreMap} from "@/shared/const";
 
 const MovieCard: React.FC<MovieCardProps> = ({
      title,
@@ -22,6 +21,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
         <div className={bem()}>
             <div className={bem("poster")}>
                 {posterPath ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                         src={`https://image.tmdb.org/t/p/w500${posterPath}`}
                         alt={title}

@@ -55,7 +55,7 @@ const AdvancedFilters:FC = () => {
             ...filters,
             page: Number(filters.page),
         });
-    }, [filters]);
+    }, [filters,contextFilters,search]);
 
     return (
         <div className={bem()}>

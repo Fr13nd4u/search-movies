@@ -1,6 +1,6 @@
 "use client"
 
-import {FC, useState, ChangeEvent, useRef} from 'react';
+import {FC, useState, ChangeEvent} from 'react';
 import {createBem, getGenreNames} from "@/shared/lib";
 import styles from "./search-movies.module.scss";
 import {useMovieSearch} from "@/entities/movies";
@@ -22,9 +22,6 @@ const SearchInput:FC = () => {
         search({ ...filters, query: newValue, page: 1 });
     };
 
-    // TODO: Trigger API call or autocomplete logic here
-
-
     return (
         <div className={bem("container")}>
             <input
@@ -42,6 +39,7 @@ const SearchInput:FC = () => {
                 {!isLoading && movies.map((movie) => (
                     <div key={movie.id} className={bem_autocomplete("item")}>
                             {movie.poster_path ? (
+                                // eslint-disable-next-line @next/next/no-img-element
                                 <img
                                     src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
                                     alt={movie.title}
