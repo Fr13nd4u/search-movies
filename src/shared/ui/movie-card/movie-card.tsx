@@ -29,15 +29,15 @@ const MovieCard: React.FC<MovieCardProps> = ({
                 ) : (
                     <div className={bem("placeholder")}>🎬</div>
                 )}
-                <div className={bem("rating")}>{rating.toFixed(1)}</div>
+                <div className={bem("rating")}>{rating?.toFixed(1)}</div>
             </div>
 
             <div className={bem("info")}>
                 <h3 className={bem("title")}>{title}</h3>
-                {releaseYear && (<div className={bem("year")}>{new Date(releaseYear).getFullYear()}</div>)}
+                {releaseYear && (<div className={bem("year")}>{new Date(releaseYear).getFullYear() || ""}</div>)}
                 <p className={bem("overview")}>{overview}</p>
                 <div className={bem("genres")}>
-                    {genreNames.map((genre) => (
+                    {genreNames?.map((genre) => (
                         <span key={genre} className={bem("genre")}>
                           {genre}
                         </span>
