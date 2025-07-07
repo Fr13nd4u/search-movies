@@ -15,11 +15,18 @@ interface FiltersState {
     includeAdult: boolean;
 }
 
+// AdvancedFilters component for filtering movie search results by language, year, region, etc.
+// Displays a toggleable filter panel and triggers search on filters change
 const AdvancedFilters:FC = () => {
     const bem = createBem("advanced-filters", styles);
+
+    // Local state for toggling visibility of filter options
     const [showFilters, setShowFilters] = useState(false);
+
+    // Access global filters and search function from movie context
     const { filters: contextFilters, search } = useMovieSearch();
 
+    // Local state to control form inputs, initialized with context filters
     const [filters, setFilters] = useState<FiltersState>({
         language: contextFilters.language,
         primaryReleaseYear: "",
@@ -29,6 +36,7 @@ const AdvancedFilters:FC = () => {
         includeAdult: contextFilters.includeAdult,
     });
 
+    // Updates filter state when input fields change
     const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
@@ -57,6 +65,7 @@ const AdvancedFilters:FC = () => {
         });
     }, 400);
 
+    // Triggers search whenever filters or visibility changes (only when panel is visible)
     useEffect(() => {
         if (contextFilters.query.trim() !== ""){
             debouncedSearch(filters);

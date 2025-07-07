@@ -4,17 +4,24 @@ import {FC, useState, ChangeEvent} from 'react';
 import {createBem, getGenreNames,useDebouncedCallback} from "@/shared/lib";
 import styles from "./search-movies.module.scss";
 import {useMovieSearch} from "@/entities/movies";
+import {useRouter} from "next/navigation";
 
 const SearchInput:FC = () => {
     const bem = createBem("search", styles);
     const bem_autocomplete = createBem("autocomplete", styles);
+    const router = useRouter();
 
     const [searchText, setSearchText] = useState("");
 
     const { search, filters ,movies,isLoading} = useMovieSearch();
+
+    // Local state to track whether input is focused (to show/hide autocomplete)
     const [isFocused, setIsFocused] = useState(false);
 
+    // Set focus state to true on input focus
     const handleFocus = () => setIsFocused(true);
+
+    // Set focus state to false on input blur
     const handleBlur = () => setIsFocused(false);
 
     const debouncedSearch = useDebouncedCallback((query: string) => {
@@ -25,6 +32,11 @@ const SearchInput:FC = () => {
         const newValue = e.target.value;
         setSearchText(newValue);
         debouncedSearch(newValue);
+    };
+
+    // Navigate to the movie detail page by pushing to router
+    const handleClick = (id:number) => {
+        router.push(`/movies/${id}`);
     };
 
     return (
@@ -42,7 +54,8 @@ const SearchInput:FC = () => {
 
             {searchText && isFocused && <div className={bem_autocomplete("dropdown")} id="autocompleteDropdown">
                 {!isLoading && movies.map((movie) => (
-                    <div key={movie.id} className={bem_autocomplete("item")}>
+                    // use onMouseDown for handle click before isFocused true
+                    <div key={movie.id} className={bem_autocomplete("item")} onMouseDown={()=>handleClick(movie.id)}>
                             {movie.poster_path ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img
@@ -57,10 +70,8 @@ const SearchInput:FC = () => {
 
                         <div className={("info")}>
                             <h4>{movie.title}</h4>
-                            <p> {movie.release_date
-                                ? new Date(movie.release_date).getFullYear()
-                                : "Unknown year"}{" "}
-                                • {getGenreNames(movie.genre_ids)?.join(", ")}</p>
+                            <p> { new Date(movie.release_date).getFullYear() || " "}
+                                {" "}• {getGenreNames(movie.genre_ids)?.join(", ")}</p>
                         </div>
                     </div>
                 ))}

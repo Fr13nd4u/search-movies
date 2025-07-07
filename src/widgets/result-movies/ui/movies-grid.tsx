@@ -21,6 +21,7 @@ const MoviesGrid:FC = () => {
                 {!isLoading && movies?.map((movie)=> (
                     <MovieCard
                         key={movie.id}
+                        id={movie.id}
                         title={movie.title}
                         posterPath={movie.poster_path}
                         rating={movie.vote_average}

@@ -16,18 +16,27 @@ interface MovieSearchContextValue {
 
 const MovieSearchContext = createContext<MovieSearchContextValue | undefined>(undefined);
 
+// Provides movie search state and logic to all children components
+// Manages movies list, loading status, filters, pagination, and search action
 export const MovieSearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [movies, setMovies] = useState<Movie[]>([]);
+
+    // Current applied search filters
     const [filters, setFilters] = useState<MovieSearchFilters>({
         query: "",
         language: "en-US",
         page: 1,
         includeAdult: false,
     });
+
+    // Loading indicator for API requests
     const [isLoading, setIsLoading] = useState(false);
+
+    // Pagination info: total pages and total items matching the query
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
 
+    // Performs movie search with given filters and updates states accordingly
     const search = useCallback(async (newFilters: MovieSearchFilters) => {
         try {
             setIsLoading(true);

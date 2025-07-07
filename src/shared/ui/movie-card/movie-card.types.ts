@@ -1,4 +1,5 @@
 export interface MovieCardProps {
+    id: number
     title: string;
     posterPath?: string | null;
     rating: number;

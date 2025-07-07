@@ -8,10 +8,10 @@ export default function Home() {
   return (
       <main className={styles.container}>
         <Header />
-          <MovieSearchProvider>
+        <MovieSearchProvider>
             <SearchMovies />
             <ResultMovies />
-          </MovieSearchProvider>
+        </MovieSearchProvider>
       </main>
   );
 }

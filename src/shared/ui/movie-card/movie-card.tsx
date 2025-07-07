@@ -1,11 +1,13 @@
 "use client"
 
 import React from 'react';
+import { useRouter } from "next/navigation";
 import {createBem, getGenreNames} from "@/shared/lib";
 import styles from "./movie-card.module.scss"
 import {MovieCardProps} from "./movie-card.types";
 
 const MovieCard: React.FC<MovieCardProps> = ({
+     id,
      title,
      posterPath,
      rating,
@@ -14,11 +16,15 @@ const MovieCard: React.FC<MovieCardProps> = ({
      genres,
  }) => {
     const bem = createBem("movie-card", styles);
+    const router = useRouter();
 
+    const handleClick = () => {
+        router.push(`/movies/${id}`);
+    };
     const genreNames = getGenreNames(genres)
 
     return (
-        <div className={bem()}>
+        <div className={bem()}  onClick={handleClick}>
             <div className={bem("poster")}>
                 {posterPath ? (
                     // eslint-disable-next-line @next/next/no-img-element
