@@ -2,7 +2,7 @@
 
 import {FC,useState,useEffect, ChangeEvent} from 'react';
 import styles from "./advanced-filters.module.scss"
-import {createBem} from "@/shared/lib";
+import {createBem, useDebouncedCallback} from "@/shared/lib";
 import {useMovieSearch} from "@/entities/movies";
 import {languages, regions} from "@/features/advanced-filters";
 
@@ -49,12 +49,18 @@ const AdvancedFilters:FC = () => {
         setShowFilters((prev) => !prev);
     };
 
-    useEffect(() => {
+    const debouncedSearch = useDebouncedCallback((newFilters: FiltersState) => {
         search({
             ...contextFilters,
-            ...filters,
-            page: Number(filters.page),
+            ...newFilters,
+            page: Number(newFilters.page),
         });
+    }, 400);
+
+    useEffect(() => {
+        if (contextFilters.query.trim() !== ""){
+            debouncedSearch(filters);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters]);
 

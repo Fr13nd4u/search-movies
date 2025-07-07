@@ -1,7 +1,7 @@
 "use client"
 
 import {FC, useState, ChangeEvent} from 'react';
-import {createBem, getGenreNames} from "@/shared/lib";
+import {createBem, getGenreNames,useDebouncedCallback} from "@/shared/lib";
 import styles from "./search-movies.module.scss";
 import {useMovieSearch} from "@/entities/movies";
 
@@ -10,16 +10,21 @@ const SearchInput:FC = () => {
     const bem_autocomplete = createBem("autocomplete", styles);
 
     const [searchText, setSearchText] = useState("");
+
     const { search, filters ,movies,isLoading} = useMovieSearch();
     const [isFocused, setIsFocused] = useState(false);
 
     const handleFocus = () => setIsFocused(true);
     const handleBlur = () => setIsFocused(false);
 
+    const debouncedSearch = useDebouncedCallback((query: string) => {
+        search({ ...filters, query, page: 1 });
+    }, 400);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         setSearchText(newValue);
-        search({ ...filters, query: newValue, page: 1 });
+        debouncedSearch(newValue);
     };
 
     return (
